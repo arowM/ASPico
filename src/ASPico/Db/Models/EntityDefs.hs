@@ -23,8 +23,8 @@ aspicoEntityDefs = [persistLowerCase|
     deriving Typeable
 
   Conversion
-    conversion  ConversionId
     affiliate   AffiliateId
+    conversion  ConversionId
     created     CreatedTime
 
     deriving Eq
