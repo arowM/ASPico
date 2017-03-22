@@ -2,16 +2,15 @@
 
 module ASPico.Db.Models.EntityDefs where
 
-import ASPico.Prelude
-
-import Database.Persist ( EntityDef )
-import Database.Persist.TH ( persistLowerCase )
+import Database.Persist (EntityDef)
+import Database.Persist.TH (persistLowerCase)
 
 import ASPico.Db.Models.Base
-    ( CompName, CreatedTime, DeletedTime, PasswordHash, UpdatedTime )
+       (AdvertizerId, CvId, PartnerId, ProductId, CreatedTime)
 
 aspicoEntityDefs :: [EntityDef]
-aspicoEntityDefs = [persistLowerCase|
+aspicoEntityDefs =
+  [persistLowerCase|
   Affiliate
     partner     PartnerId
     advertizer  AdvertizerId
@@ -24,7 +23,7 @@ aspicoEntityDefs = [persistLowerCase|
 
   Conversion
     affiliate   AffiliateId
-    conversion  ConversionId
+    conversion  CvId
     created     CreatedTime
 
     deriving Eq

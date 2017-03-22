@@ -4,18 +4,14 @@ import ASPico.Prelude
 
 import Database.Persist.Sql
        (Filter, PersistEntity(..), PersistRecordBackend, PersistStoreRead,
-        SqlBackend, Update, (=.), (==.), entityVal, get, getBy,
-        insertEntity, selectFirst, selectList, update)
+        SqlBackend, (==.), get, getBy, insertEntity, selectFirst,
+        selectList)
 
 import ASPico.Db
-       (Company(..), CompanyUser(..), CompName, CreatedTime(..),
-        DeletedTime(..), Entity(Entity), EntityField(..),
-        GetEntityField(..), Key, Password, Site(..), Unique(..),
-        UpdatedTime(..), deletedEntityField, runDb, runDbCurrTime)
-import ASPico.Monad.Auth (MonadASPicoAuth(authHashPass))
+       (AdvertizerId, Affiliate(..), Conversion(..), CreatedTime(..),
+        CvId, Entity(Entity), EntityField(..), Key, PartnerId, ProductId,
+        Unique, runDb, runDbCurrTime)
 import ASPico.Monad.Base (ASPicoM)
-import ASPico.Password
-       (PasswordCheck(PasswordCorrect, PasswordIncorrect), checkPassword)
 
 ---------------------------------------------------
 -- Typeclass and Instance with Generic Functions --
@@ -30,7 +26,7 @@ class Monad m =>
 
   -- | Get all entities matching a 'Filter'.  Filters out deleted records.
   dbGetEntitiesBy
-    :: (GetEntityField record, PersistRecordBackend record SqlBackend)
+    :: (PersistRecordBackend record SqlBackend)
     => [Filter record] -> m [Entity record]
 
   -- | Just like Persistent's 'getEntity'. Does not filter out deleted records.
@@ -40,7 +36,7 @@ class Monad m =>
 
   -- | Similar to Persistent's 'getEntity'. Filters out deleted records
   dbGetEntity
-    :: (GetEntityField record, PersistRecordBackend record SqlBackend)
+    :: (PersistRecordBackend record SqlBackend)
     => Key record -> m (Maybe (Entity record))
 
   -- | Just like Persistent's 'getBy'.  Does not filter out deleted records.
@@ -59,10 +55,10 @@ instance MonadASPicoDb ASPicoM where
       insertEntity record
 
   dbGetEntitiesBy
-    :: (GetEntityField record, PersistRecordBackend record SqlBackend)
+    :: (PersistRecordBackend record SqlBackend)
     => [Filter record] -> ASPicoM [Entity record]
   dbGetEntitiesBy filters =
-    runDb $ selectList ((deletedEntityField ==. Nothing) : filters) []
+    runDb $ selectList filters []
 
   dbGetEntityAll
     :: PersistRecordBackend record SqlBackend
@@ -70,11 +66,11 @@ instance MonadASPicoDb ASPicoM where
   dbGetEntityAll = runDb . getEntity
 
   dbGetEntity
-    :: (GetEntityField record, PersistRecordBackend record SqlBackend)
+    :: (PersistRecordBackend record SqlBackend)
     => Key record -> ASPicoM (Maybe (Entity record))
   dbGetEntity key =
     runDb $
-    selectFirst [deletedEntityField ==. Nothing, persistIdField ==. key] []
+    selectFirst [persistIdField ==. key] []
 
   dbGetEntityBy
     :: PersistRecordBackend record SqlBackend
@@ -95,8 +91,8 @@ dbCreateAffiliate partnerId advId prodId =
 
 -- | Create a new 'Conversion'.
 dbCreateConversion
-  :: (MonadASPicoDb m, MonadASPicoAuth m)
-  => Key Affiliate -> ConversionId -> m (Entity CompanyUser)
+  :: (MonadASPicoDb m)
+  => Key Affiliate -> CvId -> m (Entity Conversion)
 dbCreateConversion affId convId =
   dbCreate $ \currTime ->
     pure $ Conversion affId convId (CreatedTime currTime)
@@ -107,8 +103,7 @@ dbCreateConversion affId convId =
 
 -- | Just like 'dbGetEntitiesBy' with no 'Filter's.
 dbGetEntities
-  :: ( GetEntityField record
-     , MonadASPicoDb m
+  :: ( MonadASPicoDb m
      , PersistRecordBackend record SqlBackend
      )
   => m [Entity record]
@@ -118,13 +113,13 @@ dbGetEntities = dbGetEntitiesBy []
 dbGetAffiliates
   :: MonadASPicoDb m
   => m [Entity Affiliate]
-dbGetCompanies = dbGetEntities
+dbGetAffiliates = dbGetEntities
 
 -- | Get all 'Conversion's that are not deleted.
 dbGetConversions
   :: MonadASPicoDb m
   => m [Entity Conversion]
-dbGetCompanyUser = dbGetEntities
+dbGetConversions = dbGetEntities
 
 dbGetConversionsByAffiliate
   :: MonadASPicoDb m

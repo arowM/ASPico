@@ -71,16 +71,18 @@ newtype ProductId = ProductId
              , Typeable
              )
 
-newtype ConversionId = ConversionId
-  { unConversionId :: Text
+newtype CvId = CvId
+  { unCvId :: Text
   } deriving ( Data
              , Eq
+             , FromHttpApiData
              , FromJSON
              , Generic
              , Ord
              , PersistField
              , PersistFieldSql
              , Show
+             , ToHttpApiData
              , ToJSON
              , Typeable
              )

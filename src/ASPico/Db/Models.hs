@@ -9,7 +9,7 @@ module ASPico.Db.Models
   , EntityField(..)
   , GetEntityField(..)
   , Key(..)
-  , Unique(..)
+  , Unique
   ) where
 
 import ASPico.Prelude
@@ -20,7 +20,7 @@ import Database.Persist.TH
        (share, mkPersist, sqlSettings, mkMigrate, mpsGenerateLenses)
 
 import ASPico.Db.Models.Base
-       (CreatedTime(..))
+       (AdvertizerId, CvId, PartnerId, ProductId, CreatedTime(..))
 import ASPico.Db.Models.EntityDefs (aspicoEntityDefs)
 
 share

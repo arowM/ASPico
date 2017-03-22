@@ -23,8 +23,18 @@ instance Exception AppErr
 
 -- | A union of different errors that can occur in our application.
 data AppErrEnum
-  = CookieDoesNotExist
+  = AuthCookieDoesNotExist
   -- ^ A cookie with this name does not exist in the Wai 'Request'.
+  | AuthCookieCannotBeDecrypted
+  -- ^ A cookie with the correct name exists in the Wai 'Request', but its
+  -- value cannot be decrypted with the server's 'ClientSession.Key'.
+  | AuthCookieCannotBeJsonDecoded
+  -- ^ A cookie with the correct name exists in the Wai 'Request', and it can be
+  -- decrypted with the server's 'ClientSession.Key', but it fails JSON
+  -- decoding.
+  | AuthDbPasswordCheckFail
+  -- ^ The password check failed for a 'CompanyUser', or the 'CompanyUser'
+  -- does not exist in the database.
   | CouldNotFindAffiliate
   -- ^ When a conversion fires,
   -- we weren't able to find the `Affiliate` in the database.
@@ -80,12 +90,9 @@ appErrToServantErr err =
     AuthCookieCannotBeDecrypted -> setBody err401
     AuthCookieCannotBeJsonDecoded -> setBody err401
     AuthDbPasswordCheckFail -> setBody err400
-    CouldNotFindCompanyUser -> setBody err400
-    CouldNotParseHtmlDocument -> setBody err400
+    CouldNotFindAffiliate -> setBody err400
     OtherException -> setBody err500
     OtherSqlException -> setBody err500
-    SiteNotFound -> setBody err400
-    SiteCompanyKeyNoMatch -> setBody err401
   where
     setBody :: ServantErr -> ServantErr
     setBody servantErr = servantErr {errBody = encode err}
