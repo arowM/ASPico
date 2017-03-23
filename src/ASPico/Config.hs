@@ -20,7 +20,6 @@ import ASPico.Db
         DbPort, DbUser, HasDbPool(..), makePool)
 import ASPico.Environment (Environment(..), HasEnv(..))
 import ASPico.Host (HasHost(..), HasProtocol(..))
-import ASPico.Session (HasSessionKey(..))
 
 data Config = Config
   { configEnv :: !Environment
@@ -51,10 +50,6 @@ instance HasHttpManager Config where
 instance HasProtocol Config where
   getProtocol :: Config -> Text
   getProtocol = configProtocol
-
-instance HasSessionKey Config where
-  getSessionKey :: Config -> Key
-  getSessionKey = configSessionKey
 
 getRequestLoggerMiddleware :: Environment -> Middleware
 getRequestLoggerMiddleware Test = id

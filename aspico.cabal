@@ -46,7 +46,6 @@ library
                      , ASPico.Orphans
                      , ASPico.Prelude
                      , ASPico.Servant
-                     , ASPico.Session
                      , ASPico.Utils
   build-depends:       base >= 4.7 && < 5
                      , aeson
