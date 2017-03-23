@@ -1,0 +1,179 @@
+name:                aspico
+version:             0.1.0.0
+synopsis:            An experimental project to create a tiny ASP (Affiliate Service Provider).
+description:         This is an experimental project to create a tiny ASP (Affiliate Service Provider).
+homepage:            https://github.com/arowM/ASPico
+license:             MIT
+license-file:        LICENSE
+author:              Kadzuya Okamoto
+maintainer:          arow.dummy+github@gmail.com
+copyright:           (c) 2017 Kadzuya OKAMOTO
+category:            Web
+build-type:          Simple
+-- extra-source-files:
+cabal-version:       >=1.10
+
+library
+  hs-source-dirs:      src
+  exposed-modules:     ASPico
+                     , ASPico.Api
+                     , ASPico.Config
+                     , ASPico.Db
+                     , ASPico.Db.Models
+                     , ASPico.Db.Models.Base
+                     , ASPico.Db.Models.EntityDefs
+                     , ASPico.Db.Pool
+                     , ASPico.Db.Run
+                     , ASPico.Dev
+                     , ASPico.Envelope
+                     , ASPico.Environment
+                     , ASPico.Error
+                     , ASPico.Form
+                     , ASPico.Handler
+                     , ASPico.Handler.Root
+                     , ASPico.Handler.Root.AffUrl
+                     , ASPico.Handler.Root.Conversion
+                     , ASPico.Handler.Root.Record
+                     , ASPico.Host
+                     , ASPico.Http
+                     , ASPico.Monad
+                     , ASPico.Monad.Base
+                     , ASPico.Monad.Db
+                     , ASPico.Monad.Http
+                     , ASPico.Orphans
+                     , ASPico.Prelude
+                     , ASPico.Servant
+                     , ASPico.Session
+                     , ASPico.Utils
+  build-depends:       base >= 4.7 && < 5
+                     , aeson
+                     , ansi-wl-pprint
+                     , base64-bytestring
+                     , blaze-builder
+                     , blaze-html
+                     , blaze-markup
+                     , bytestring
+                     , classy-prelude
+                     , clientsession
+                     , comonad
+                     , cookie
+                     , data-default
+                     , emailaddress
+                     , envelope
+                     , fast-logger
+                     , from-sum
+                     , html-conduit
+                     , http-api-data
+                     , http-client
+                     , http-client-tls
+                     , http-conduit
+                     , http-media
+                     , http-types
+                     , lens
+                     , lens-aeson
+                     , lifted-base
+                     , mime-mail
+                     , mime-mail-ses
+                     , monad-control
+                     , monad-logger
+                     , monad-time
+                     , MonadRandom
+                     , mtl
+                     , natural-transformation
+                     , parsec
+                     , persistent
+                     , persistent-postgresql
+                     , persistent-template
+                     , postgresql-simple
+                     , pretty-simple
+                     , random
+                     , resourcet
+                     , resource-pool
+                     , read-env-var
+                     , scientific
+                     , scrypt
+                     , semigroups
+                     , servant
+                     , servant-blaze
+                     , servant-server
+                     , text
+                     , time
+                     , transformers
+                     , transformers-base
+                     , unordered-containers
+                     , uuid
+                     , wai
+                     , wai-extra
+                     , warp
+                     , xml-conduit
+                     , xml-lens
+  default-language:    Haskell2010
+  ghc-options:         -Wall -fwarn-incomplete-uni-patterns -fwarn-incomplete-record-updates -fwarn-monomorphism-restriction
+  default-extensions:  ConstraintKinds
+                     , DataKinds
+                     , DefaultSignatures
+                     , DeriveDataTypeable
+                     , DeriveFunctor
+                     , DeriveGeneric
+                     , DuplicateRecordFields
+                     , EmptyDataDecls
+                     , FlexibleContexts
+                     , FlexibleInstances
+                     , GADTs
+                     , GeneralizedNewtypeDeriving
+                     , InstanceSigs
+                     , LambdaCase
+                     , MultiParamTypeClasses
+                     , NamedFieldPuns
+                     , NoImplicitPrelude
+                     , NoMonomorphismRestriction
+                     , OverloadedLabels
+                     , OverloadedLists
+                     , OverloadedStrings
+                     , PackageImports
+                     , PartialTypeSignatures
+                     , PatternSynonyms
+                     , PolyKinds
+                     , RankNTypes
+                     , RecordWildCards
+                     , ScopedTypeVariables
+                     , StandaloneDeriving
+                     , TupleSections
+                     , TypeFamilies
+                     , TypeOperators
+                     , ViewPatterns
+  other-extensions:    QuasiQuotes
+                     , TemplateHaskell
+
+executable aspico-api
+  hs-source-dirs:      app/api
+  main-is:             Main.hs
+  ghc-options:         -Wall -threaded -rtsopts -with-rtsopts=-N -fwarn-incomplete-uni-patterns -fwarn-incomplete-record-updates -fwarn-monomorphism-restriction
+  build-depends:       base
+                     , aspico
+  default-language:    Haskell2010
+
+test-suite aspico-test
+  type:                exitcode-stdio-1.0
+  hs-source-dirs:      test
+  main-is:             Spec.hs
+  build-depends:       base
+                     , aspico
+  ghc-options:         -Wall -threaded -rtsopts -with-rtsopts=-N -fwarn-incomplete-uni-patterns -fwarn-incomplete-record-updates -fwarn-monomorphism-restriction
+  default-language:    Haskell2010
+
+test-suite aspico-doctest
+  type:                exitcode-stdio-1.0
+  main-is:             DocTest.hs
+  hs-source-dirs:      test
+  build-depends:       base
+                     , classy-prelude
+                     , doctest
+                     , Glob
+  default-language:    Haskell2010
+  ghc-options:         -Wall -threaded -rtsopts -with-rtsopts=-N
+  default-extensions:  NoImplicitPrelude
+
+source-repository head
+  type:     git
+  location: https://bitbucket.org/arow/aspico

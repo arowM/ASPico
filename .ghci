@@ -1,0 +1,9 @@
+-- The following hack is needed when using two packages, where one is
+-- ImplicitPrelude and one is NoImplicitPrelude.
+
+:set -XImplicitPrelude
+-- :add ../pretty-simple/src/Text/Pretty/Simple.hs
+:set -XNoImplicitPrelude
+:add src/ASPico/Dev.hs
+:add src/ASPico.hs
+import ASPico.Dev
