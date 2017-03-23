@@ -1,6 +1,6 @@
-module ASPico.Handler.Root.Record
-  ( ApiRecord
-  , serverRecord
+module ASPico.Handler.Root.Track
+  ( ApiTrack
+  , serverTrack
   ) where
 
 import ASPico.Prelude
@@ -12,15 +12,15 @@ import ASPico.Error (AppErr)
 import ASPico.Servant (Cookie, setCookieHeader)
 -- import ASPico.Monad (MonadASPicoDb)
 
-type ApiRecord = "record"
+type ApiTrack = "track"
   :> Capture "aff-id" AffiliateId
   :> Get '[JSON] (Headers '[Header "Set-Cookie" Cookie] ())
 
-serverRecord
+serverTrack
   -- :: (MonadError AppErr m, MonadASPicoDb m)
   :: (MonadError AppErr m)
-  => ServerT ApiRecord m
-serverRecord = record
+  => ServerT ApiTrack m
+serverTrack = record
 
 cookieName :: ByteString
 cookieName = "aspico-aff"
