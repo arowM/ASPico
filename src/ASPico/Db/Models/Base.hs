@@ -33,12 +33,14 @@ newtype PartnerId = PartnerId
   { unPartnerId :: Text
   } deriving ( Data
              , Eq
+             , FromHttpApiData
              , FromJSON
              , Generic
              , Ord
              , PersistField
              , PersistFieldSql
              , Show
+             , ToHttpApiData
              , ToJSON
              , Typeable
              )
@@ -47,12 +49,14 @@ newtype AdvertizerId = AdvertizerId
   { unAdvertizerId :: Text
   } deriving ( Data
              , Eq
+             , FromHttpApiData
              , FromJSON
              , Generic
              , Ord
              , PersistField
              , PersistFieldSql
              , Show
+             , ToHttpApiData
              , ToJSON
              , Typeable
              )
@@ -61,12 +65,14 @@ newtype ProductId = ProductId
   { unProductId :: Text
   } deriving ( Data
              , Eq
+             , FromHttpApiData
              , FromJSON
              , Generic
              , Ord
              , PersistField
              , PersistFieldSql
              , Show
+             , ToHttpApiData
              , ToJSON
              , Typeable
              )
