@@ -15,9 +15,6 @@ Use the following steps to install postgres and set it up to be used with ASPico
 ```sh
 # install postgres
 
-# become postgres user
-$ sudo -i -u postgres
-
 # create the aspico user for developement and testing
 $ sudo -u postgres -- psql --command "CREATE ROLE aspico NOSUPERUSER NOCREATEDB NOCREATEROLE INHERIT LOGIN ENCRYPTED PASSWORD '3pUiRmS2Rv6f28uW'"
 
