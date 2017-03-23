@@ -1,6 +1,6 @@
 module ASPico.Monad.Db where
 
-import ASPico.Prelude
+import ASPico.Prelude hiding (product)
 
 import Database.Persist.Sql
        (Filter, PersistEntity(..), PersistRecordBackend, PersistStoreRead,
@@ -8,9 +8,10 @@ import Database.Persist.Sql
         selectList)
 
 import ASPico.Db
-       (AdvertizerId, Affiliate(..), Conversion(..), CreatedTime(..),
-        CvId, Entity(Entity), EntityField(..), Key, PartnerId, ProductId,
-        Unique(UniqueAffiliate), runDb, runDbCurrTime)
+       (Affiliate(..), Conversion(..), CreatedTime(..), CvId,
+        Entity(Entity), EntityField(..), Key, Unique(UniqueAffiliate),
+        runDb, runDbCurrTime)
+import ASPico.Form (AffiliateForm(..))
 import ASPico.Monad.Base (ASPicoM)
 
 ---------------------------------------------------
@@ -84,14 +85,15 @@ instance MonadASPicoDb ASPicoM where
 -- | Create a new 'Affiliate'.
 dbCreateAffiliate
   :: MonadASPicoDb m
-  => PartnerId -> AdvertizerId -> ProductId -> m (Entity Affiliate)
-dbCreateAffiliate partnerId advId prodId = do
-  mEntity <- dbGetEntityBy $ UniqueAffiliate partnerId advId prodId
+  => AffiliateForm -> m (Entity Affiliate)
+dbCreateAffiliate AffiliateForm {..} = do
+  mEntity <- dbGetEntityBy $ UniqueAffiliate partner advertizer product
   case mEntity of
     Just a -> pure a
     Nothing ->
       dbCreate $ \currTime ->
-        pure $ Affiliate partnerId advId prodId (CreatedTime currTime)
+        pure $
+        Affiliate partner advertizer product redirectTo (CreatedTime currTime)
 
 -- | Create a new 'Conversion'.
 dbCreateConversion

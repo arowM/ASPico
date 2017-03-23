@@ -20,7 +20,7 @@ import Database.Persist.TH
        (share, mkPersist, sqlSettings, mkMigrate, mpsGenerateLenses)
 
 import ASPico.Db.Models.Base
-       (AdvertizerId, CvId, PartnerId, ProductId, CreatedTime(..))
+       (AdvertizerId, CreatedTime(..), CvId, PartnerId, ProductId, URL)
 import ASPico.Db.Models.EntityDefs (aspicoEntityDefs)
 
 share

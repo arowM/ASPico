@@ -6,7 +6,7 @@ import Database.Persist (EntityDef)
 import Database.Persist.TH (persistLowerCase)
 
 import ASPico.Db.Models.Base
-       (AdvertizerId, CvId, PartnerId, ProductId, CreatedTime)
+       (AdvertizerId, CreatedTime, CvId, PartnerId, ProductId, URL)
 
 aspicoEntityDefs :: [EntityDef]
 aspicoEntityDefs =
@@ -15,6 +15,7 @@ aspicoEntityDefs =
     partner     PartnerId
     advertizer  AdvertizerId
     product     ProductId
+    redirectTo  URL
     created     CreatedTime
 
     UniqueAffiliate partner advertizer product

@@ -23,6 +23,6 @@ serverAffiliate = affUrl
 affUrl
   :: (MonadError AppErr m, MonadASPicoDb m)
   => AffiliateForm -> m (Envelope AffiliateResp)
-affUrl AffiliateForm{..} = do
-  Entity k _ <- dbCreateAffiliate partner advertizer product
+affUrl form = do
+  Entity k _ <- dbCreateAffiliate form
   returnSuccess . AffiliateResp . tshow . fromSqlKey $ k

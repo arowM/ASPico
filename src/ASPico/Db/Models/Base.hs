@@ -25,6 +25,27 @@ newtype CreatedTime = CreatedTime
              , Typeable
              )
 
+----------------------
+-- Aliases for Text --
+----------------------
+
+newtype URL = URL
+  { unURL :: Text
+  } deriving ( Data
+             , Eq
+             , FromHttpApiData
+             , FromJSON
+             , Generic
+             , IsString
+             , Ord
+             , PersistField
+             , PersistFieldSql
+             , Show
+             , ToHttpApiData
+             , ToJSON
+             , Typeable
+             )
+
 ------------------
 --  Identifiers --
 ------------------

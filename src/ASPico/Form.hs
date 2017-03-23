@@ -12,12 +12,13 @@ import ASPico.Prelude
 import Data.Aeson.TH (defaultOptions, deriveJSON)
 import Web.FormUrlEncoded (FromForm, ToForm)
 
-import ASPico.Db (AdvertizerId, PartnerId, ProductId)
+import ASPico.Db (AdvertizerId, PartnerId, ProductId, URL)
 
 data AffiliateForm = AffiliateForm
   { partner :: PartnerId
   , advertizer :: AdvertizerId
   , product :: ProductId
+  , redirectTo :: URL
   } deriving (Data, Eq, Generic, Show, Typeable)
 
 deriveJSON defaultOptions ''AffiliateForm
