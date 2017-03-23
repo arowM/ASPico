@@ -30,6 +30,7 @@ library
                      , ASPico.Error
                      , ASPico.Form
                      , ASPico.Handler
+                     , ASPico.Handler.Consts
                      , ASPico.Handler.Root
                      , ASPico.Handler.Root.Affiliate
                      , ASPico.Handler.Root.Conversion

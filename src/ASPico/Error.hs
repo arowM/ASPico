@@ -11,7 +11,7 @@ import ASPico.Prelude
 
 import Data.Aeson (ToJSON(..), Value(..), encode)
 import Database.PostgreSQL.Simple (SqlError(..))
-import Servant (ServantErr(..), err400, err401, err500)
+import Servant (ServantErr(..), err400, err401, err404, err500)
 import Web.Envelope (Err(..))
 import Web.HttpApiData (ToHttpApiData(toQueryParam))
 
@@ -90,7 +90,7 @@ appErrToServantErr err =
     AuthCookieCannotBeDecrypted -> setBody err401
     AuthCookieCannotBeJsonDecoded -> setBody err401
     AuthDbPasswordCheckFail -> setBody err400
-    CouldNotFindAffiliate -> setBody err400
+    CouldNotFindAffiliate -> setBody err404
     OtherException -> setBody err500
     OtherSqlException -> setBody err500
   where
