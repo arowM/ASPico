@@ -14,24 +14,24 @@ import Web.FormUrlEncoded (FromForm, ToForm)
 
 import ASPico.Db (AdvertizerId, PartnerId, ProductId)
 
-data AffUrlForm = AffUrlForm
+data AffiliateForm = AffiliateForm
   { partner :: PartnerId
   , advertizer :: AdvertizerId
   , product :: ProductId
   } deriving (Data, Eq, Generic, Show, Typeable)
 
-deriveJSON defaultOptions ''AffUrlForm
+deriveJSON defaultOptions ''AffiliateForm
 
-instance FromForm AffUrlForm
+instance FromForm AffiliateForm
 
-instance ToForm AffUrlForm
+instance ToForm AffiliateForm
 
-data AffUrlResp = AffUrlResp
+data AffiliateResp = AffiliateResp
   { affId :: Text
   } deriving (Data, Eq, Generic, Show, Typeable)
 
-deriveJSON defaultOptions ''AffUrlResp
+deriveJSON defaultOptions ''AffiliateResp
 
-instance FromForm AffUrlResp
+instance FromForm AffiliateResp
 
-instance ToForm AffUrlResp
+instance ToForm AffiliateResp

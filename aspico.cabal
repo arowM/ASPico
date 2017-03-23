@@ -31,7 +31,7 @@ library
                      , ASPico.Form
                      , ASPico.Handler
                      , ASPico.Handler.Root
-                     , ASPico.Handler.Root.AffUrl
+                     , ASPico.Handler.Root.Affiliate
                      , ASPico.Handler.Root.Conversion
                      , ASPico.Handler.Root.Record
                      , ASPico.Host
