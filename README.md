@@ -4,17 +4,33 @@
 
 This is an experimental project to create a tiny ASP (Affiliate Service Provider).
 
-## Features
+## APIs
 
-TODO
+### Create new affiliate
 
-## Steps to install postgres
+```bash
+$ curl -v -X POST -H "Content-Type: application/json" -d '
+  {"partner": "partner_id", "advertizer": "advertizer_id", "product": "product_id", "redirectTo": "redirect_url"}
+' 'http://localhost:8081/v0/affiliate_url'
+```
 
-Use the following steps to install postgres and set it up to be used with ASPico.
+### Start tracking
+
+```bash
+$ curl -v -X GET -H "Content-Type: application/json" "http://localhost:8081/v0/track/${affiliate_id}"
+```
+
+### Save conversion
+
+```bash
+$ curl -v -X GET --cookie "aspico-aff=${affiliate_id}" "http://localhost:8081/v0/cv?cid=${conversion_id}"
+```
+
+## Steps to setup postgres
+
+Use the following steps to setup postgres and set it up to be used with ASPico.
 
 ```sh
-# install postgres
-
 # create the aspico user for developement and testing
 $ sudo -u postgres -- psql --command "CREATE ROLE aspico NOSUPERUSER NOCREATEDB NOCREATEROLE INHERIT LOGIN ENCRYPTED PASSWORD '3pUiRmS2Rv6f28uW'"
 
