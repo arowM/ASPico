@@ -10,7 +10,7 @@ import Database.Persist.Sql
 import ASPico.Db
        (AdvertizerId, Affiliate(..), Conversion(..), CreatedTime(..),
         CvId, Entity(Entity), EntityField(..), Key, PartnerId, ProductId,
-        Unique, runDb, runDbCurrTime)
+        Unique(UniqueAffiliate), runDb, runDbCurrTime)
 import ASPico.Monad.Base (ASPicoM)
 
 ---------------------------------------------------
@@ -85,9 +85,13 @@ instance MonadASPicoDb ASPicoM where
 dbCreateAffiliate
   :: MonadASPicoDb m
   => PartnerId -> AdvertizerId -> ProductId -> m (Entity Affiliate)
-dbCreateAffiliate partnerId advId prodId =
-  dbCreate $ \currTime ->
-    pure $ Affiliate partnerId advId prodId (CreatedTime currTime)
+dbCreateAffiliate partnerId advId prodId = do
+  mEntity <- dbGetEntityBy $ UniqueAffiliate partnerId advId prodId
+  case mEntity of
+    Just a -> pure a
+    Nothing ->
+      dbCreate $ \currTime ->
+        pure $ Affiliate partnerId advId prodId (CreatedTime currTime)
 
 -- | Create a new 'Conversion'.
 dbCreateConversion

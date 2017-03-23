@@ -17,6 +17,7 @@ aspicoEntityDefs =
     product     ProductId
     created     CreatedTime
 
+    UniqueAffiliate partner advertizer product
     deriving Eq
     deriving Show
     deriving Typeable

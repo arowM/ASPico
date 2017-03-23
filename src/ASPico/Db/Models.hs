@@ -9,7 +9,7 @@ module ASPico.Db.Models
   , EntityField(..)
   , GetEntityField(..)
   , Key(..)
-  , Unique
+  , Unique(..)
   ) where
 
 import ASPico.Prelude

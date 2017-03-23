@@ -27,7 +27,7 @@ instance FromForm AffUrlForm
 instance ToForm AffUrlForm
 
 data AffUrlResp = AffUrlResp
-  { url :: Text
+  { affId :: Text
   } deriving (Data, Eq, Generic, Show, Typeable)
 
 deriveJSON defaultOptions ''AffUrlResp
