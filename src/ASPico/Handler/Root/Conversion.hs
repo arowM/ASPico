@@ -1,3 +1,5 @@
+{-# LANGUAGE TemplateHaskell #-}
+
 module ASPico.Handler.Root.Conversion
   ( ApiConversion
   , serverConversion
@@ -13,6 +15,7 @@ import Web.HttpApiData (FromHttpApiData(..), ToHttpApiData)
 import ASPico.Db (Affiliate, CvId)
 import ASPico.Error (AppErr)
 import ASPico.Handler.Consts (affiliateCookie)
+import ASPico.Handler.Root.Conversion.TH (pngContent)
 import ASPico.Monad (MonadASPicoDb, dbCreateConversion)
 import ASPico.Servant (Png)
 
@@ -51,4 +54,4 @@ conversion mconvId mcookie = do
         affId
         convId
     _ -> pure ()
-  pure ""
+  pure $(pngContent)

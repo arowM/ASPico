@@ -10,7 +10,8 @@ maintainer:          arow.dummy+github@gmail.com
 copyright:           (c) 2017 Kadzuya OKAMOTO
 category:            Web
 build-type:          Simple
--- extra-source-files:
+extra-source-files:  templates/dummy.png
+                     README.md
 cabal-version:       >=1.10
 
 library
@@ -34,6 +35,7 @@ library
                      , ASPico.Handler.Root
                      , ASPico.Handler.Root.Affiliate
                      , ASPico.Handler.Root.Conversion
+                     , ASPico.Handler.Root.Conversion.TH
                      , ASPico.Handler.Root.Track
                      , ASPico.Host
                      , ASPico.Http
@@ -97,6 +99,7 @@ library
                      , servant
                      , servant-blaze
                      , servant-server
+                     , template-haskell
                      , text
                      , time
                      , transformers
