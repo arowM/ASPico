@@ -2,8 +2,6 @@ module ASPico.Config where
 
 import ASPico.Prelude
 
-import Control.FromSum (fromEitherOr)
-import Data.ByteString.Base64 (decode)
 import Database.Persist.Postgresql (ConnectionPool)
 import Network.HTTP.Client
        (HasHttpManager(getHttpManager), Manager, newManager)
@@ -13,7 +11,6 @@ import Network.Wai.Middleware.RequestLogger
        (logStdoutDev, logStdout)
 import Network.Wai (Middleware)
 import System.ReadEnvVar (lookupEnvDef, readEnvVarDef)
-import Web.ClientSession (Key, initKey)
 
 import ASPico.Db
        (DbDatabase, DbHost, DbPass, DbPoolConnNum, DbPoolConnTimeout,
@@ -28,7 +25,6 @@ data Config = Config
   , configPool :: !ConnectionPool
   , configPort :: !Port
   , configProtocol :: !Text
-  , configSessionKey :: !Key
   }
 
 instance HasDbPool Config where
@@ -60,8 +56,6 @@ type Host = String
 
 type Protocol = String
 
-type Base64SessionKey = ByteString
-
 createConfig
   :: (MonadBaseControl IO m, MonadIO m)
   => Environment
@@ -75,15 +69,10 @@ createConfig
   -> DbDatabase
   -> Host
   -> Protocol
-  -> Base64SessionKey
   -> m Config
-createConfig env port dbConnNum dbConnTimeout dbHost dbPort dbUser dbPass dbDB host protocol base64SessionKey = do
+createConfig env port dbConnNum dbConnTimeout dbHost dbPort dbUser dbPass dbDB host protocol = do
   httpManager <- liftIO $ newManager tlsManagerSettings
   pool <- makePool dbConnNum dbConnTimeout dbHost dbPort dbUser dbPass dbDB
-  let eitherSessionKey = initKey =<< decode base64SessionKey
-      sessionKey =
-        fromEitherOr eitherSessionKey $ \err ->
-          error $ "Failed to decode the session key: " <> err
   pure
     Config
     { configEnv = env
@@ -92,7 +81,6 @@ createConfig env port dbConnNum dbConnTimeout dbHost dbPort dbUser dbPass dbDB h
     , configPool = pool
     , configPort = port
     , configProtocol = pack protocol
-    , configSessionKey = sessionKey
     }
 
 createConfigFromEnvVars :: IO Config
@@ -109,12 +97,6 @@ createConfigFromEnvVars = do
   dbDatabase <- lookupEnvDef "ASPICO_DB_DATABASE" "aspico"
   host <- lookupEnvDef "ASPICO_HOST" "localhost:8081"
   protocol <- lookupEnvDef "ASPICO_PROTOCOL" "http"
-  -- A new session key can be created in GHCI with the command
-  -- ASPico.Dev.createSessionKey.
-  base64SessionKey <-
-    lookupEnvDef
-      "ASPICO_BASE64_SESSION_KEY"
-      "hDwxYklK+fMs1p2ycvGGh/nQb5FDJfKYI+Msk8IreM7+NWkh8nA/Kezw+xj/FnifLHvr5nXuDQV2qfQ70oKBicYYiWB+Y/lzIIARtG1ZtyEFMw1HyaUeARjG4Ue+U3kX"
   createConfig
     env
     port
@@ -127,4 +109,3 @@ createConfigFromEnvVars = do
     dbDatabase
     host
     protocol
-    base64SessionKey
