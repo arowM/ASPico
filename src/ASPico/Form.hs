@@ -25,3 +25,13 @@ deriveJSON defaultOptions ''AffUrlForm
 instance FromForm AffUrlForm
 
 instance ToForm AffUrlForm
+
+data AffUrlResp = AffUrlResp
+  { url :: Text
+  } deriving (Data, Eq, Generic, Show, Typeable)
+
+deriveJSON defaultOptions ''AffUrlResp
+
+instance FromForm AffUrlResp
+
+instance ToForm AffUrlResp
