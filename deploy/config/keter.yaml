@@ -1,0 +1,8 @@
+stanzas:
+  - type: webapp
+    exec: ../aspico-api
+    host: localhost
+    env:
+      ENV: Production
+    forward-env:
+      - ASPICO_DB_PASSWORD
