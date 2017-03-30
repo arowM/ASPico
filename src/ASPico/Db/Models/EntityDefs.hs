@@ -25,7 +25,7 @@ aspicoEntityDefs =
 
   Conversion
     affiliate   AffiliateId
-    conversion  CvId
+    conversion  CvId Maybe
     created     CreatedTime
 
     deriving Eq

@@ -98,7 +98,7 @@ dbCreateAffiliate AffiliateForm {..} = do
 -- | Create a new 'Conversion'.
 dbCreateConversion
   :: (MonadASPicoDb m)
-  => Key Affiliate -> CvId -> m (Entity Conversion)
+  => Key Affiliate -> Maybe CvId -> m (Entity Conversion)
 dbCreateConversion affId convId =
   dbCreate $ \currTime ->
     pure $ Conversion affId convId (CreatedTime currTime)

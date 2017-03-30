@@ -48,10 +48,10 @@ conversion
   -> Maybe AffiliateCookie
   -> m ByteString
 conversion mconvId mcookie = do
-  case (mconvId, mcookie) of
-    (Just convId, Just (AffiliateCookie affId)) ->
+  case mcookie of
+    Just (AffiliateCookie affId) ->
       void $ dbCreateConversion
         affId
-        convId
+        mconvId
     _ -> pure ()
   pure $(pngContent)
