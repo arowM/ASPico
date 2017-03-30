@@ -15,7 +15,7 @@
 # resolver:
 #  name: custom-snapshot
 #  location: "./custom-snapshot.yaml"
-resolver: lts-7.20
+resolver: lts-8.6
 
 # User packages to be built.
 # Various formats can be used as shown in the example below.
@@ -40,25 +40,7 @@ packages:
 
 # Dependency packages to be pulled from upstream that are not in the resolver
 # (e.g., acme-missiles-0.3)
-extra-deps:
-    # This should be available in lts-8
-    - from-sum-0.2.1.0
-    # These should be available in lts-8.
-    - servant-0.9.0.1
-    - servant-server-0.9.0.1
-    # This should be available in lts-8.
-    - http-api-data-0.3.2
-    # This should be available in lts-8.
-    - envelope-0.2.0.0
-    # TODO: This libraries will possibly need to be updated (along with hs-tls)
-    # because of the following bug:
-    # https://github.com/snoyberg/http-client/issues/236
-    - http-client-0.5.4
-    - http-client-tls-0.3.3
-    - http-conduit-2.2.3
-    - mime-mail-ses-0.3.2.3
-    # This should be available in lts-8.
-    - pretty-simple-1.0.0.6
+extra-deps: []
 
 # Override default flag values for local packages and extra-deps
 flags: {}

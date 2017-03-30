@@ -7,7 +7,7 @@ import Control.Lens ( Prism', prism' )
 import Data.Time.Calendar.WeekDate ( toWeekDate )
 import Data.Time.Format ( parseTimeM )
 import Data.Time.LocalTime ( LocalTime(..), ZonedTime(..) )
-import "emailaddress" Text.Email.Validate ( EmailAddress, toByteString )
+import Text.EmailAddress ( EmailAddress, toByteString )
 
 
 -- | Convert 'EmailAddress' to 'Text'.

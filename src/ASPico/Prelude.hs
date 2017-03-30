@@ -15,7 +15,7 @@ module ASPico.Prelude
   , module Data.Word
   , module Data.Void
   , module ASPico.Utils
-  , module Text.Email.Validate
+  , module Text.EmailAddress
   ) where
 
 import ClassyPrelude hiding ((<.>))
@@ -35,7 +35,7 @@ import Data.Time.LocalTime (ZonedTime)
 import Data.Typeable (Typeable, typeOf, typeRep)
 import Data.Word (Word16)
 import Data.Void (Void)
-import "emailaddress" Text.Email.Validate
+import Text.EmailAddress
        (EmailAddress, emailAddress)
 
 import ASPico.Orphans ()
