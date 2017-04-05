@@ -7,11 +7,13 @@ module ASPico.Handler.Root.Conversion
 
 import ASPico.Prelude
 
-import Database.Persist.Sql (Key(..), toSqlKey)
+import Database.Persist.Sql (Entity(..), Key(..), toSqlKey)
 import Servant ((:>), Get, Header(..), QueryParam, ServerT)
 import Web.Cookie (parseCookies)
 import Web.HttpApiData (FromHttpApiData(..), ToHttpApiData)
 
+import ASPico.Client (runPush)
+import ASPico.Config (Config(..))
 import ASPico.Db (Affiliate, CvId)
 import ASPico.Error (AppErr)
 import ASPico.Handler.Consts (affiliateCookie)
@@ -37,21 +39,20 @@ instance FromHttpApiData AffiliateCookie where
       maybeVal = lookup affiliateCookie . parseCookies . encodeUtf8 $ txt
 
 serverConversion
-  :: (MonadError AppErr m, MonadASPicoDb m)
+  :: (MonadError AppErr m, MonadASPicoDb m, MonadReader Config m, MonadIO m)
   => ServerT ApiConversion m
-serverConversion =
-  conversion
+serverConversion = conversion
 
 conversion
-  :: (MonadError AppErr m, MonadASPicoDb m)
-  => Maybe CvId
-  -> Maybe AffiliateCookie
-  -> m ByteString
+  :: (MonadError AppErr m, MonadASPicoDb m, MonadReader Config m, MonadIO m)
+  => Maybe CvId -> Maybe AffiliateCookie -> m ByteString
 conversion mconvId mcookie = do
   case mcookie of
-    Just (AffiliateCookie affId) ->
-      void $ dbCreateConversion
-        affId
-        mconvId
+    Just (AffiliateCookie affId) -> do
+      (Entity _ conv) <- dbCreateConversion affId mconvId
+      mUrl <- asks configPushUrl
+      case mUrl of
+        Just url -> liftIO $ runPush url conv
+        _ -> pure ()
     _ -> pure ()
   pure $(pngContent)
