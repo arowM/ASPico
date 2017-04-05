@@ -9,9 +9,9 @@ import Database.Persist.Sql
 
 import ASPico.Db
        (Affiliate(..), Conversion(..), CreatedTime(..), CvId,
-        Entity(Entity), EntityField(..), Key, Push(..),
-        Unique(UniqueAffiliate), runDb, runDbCurrTime)
-import ASPico.Form (AffiliateForm(..), RegisterPushForm(..))
+        Entity(Entity), EntityField(..), Key, Unique(UniqueAffiliate),
+        runDb, runDbCurrTime)
+import ASPico.Form (AffiliateForm(..))
 import ASPico.Monad.Base (ASPicoM)
 
 ---------------------------------------------------
@@ -102,15 +102,6 @@ dbCreateConversion
 dbCreateConversion affId convId =
   dbCreate $ \currTime ->
     pure $ Conversion affId convId (CreatedTime currTime)
-
--- | Create a new 'Push'.
-dbCreatePush
-  :: MonadASPicoDb m
-  => RegisterPushForm -> m (Entity Push)
-dbCreatePush RegisterPushForm {..} =
-  dbCreate $ \currTime ->
-    pure $
-    Push url (CreatedTime currTime)
 
 ------------------------------
 -- Additional GET Functions --

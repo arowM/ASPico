@@ -31,12 +31,4 @@ aspicoEntityDefs =
     deriving Eq
     deriving Show
     deriving Typeable
-
-  Push
-    url URL
-    created     CreatedTime
-
-    deriving Eq
-    deriving Show
-    deriving Typeable
     |]

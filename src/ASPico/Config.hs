@@ -10,6 +10,8 @@ import Network.Wai.Handler.Warp (Port)
 import Network.Wai.Middleware.RequestLogger
        (logStdoutDev, logStdout)
 import Network.Wai (Middleware)
+import Servant.Client (BaseUrl, parseBaseUrl)
+import System.Environment (lookupEnv)
 import System.ReadEnvVar (lookupEnvDef, readEnvVarDef)
 
 import ASPico.Db
@@ -25,6 +27,7 @@ data Config = Config
   , configPool :: !ConnectionPool
   , configPort :: !Port
   , configProtocol :: !Text
+  , configPushUrl :: !(Maybe BaseUrl)
   }
 
 instance HasDbPool Config where
@@ -69,8 +72,9 @@ createConfig
   -> DbDatabase
   -> Host
   -> Protocol
+  -> Maybe BaseUrl
   -> m Config
-createConfig env port dbConnNum dbConnTimeout dbHost dbPort dbUser dbPass dbDB host protocol = do
+createConfig env port dbConnNum dbConnTimeout dbHost dbPort dbUser dbPass dbDB host protocol pushUrl = do
   httpManager <- liftIO $ newManager tlsManagerSettings
   pool <- makePool dbConnNum dbConnTimeout dbHost dbPort dbUser dbPass dbDB
   pure
@@ -81,6 +85,7 @@ createConfig env port dbConnNum dbConnTimeout dbHost dbPort dbUser dbPass dbDB h
     , configPool = pool
     , configPort = port
     , configProtocol = pack protocol
+    , configPushUrl = pushUrl
     }
 
 createConfigFromEnvVars :: IO Config
@@ -97,6 +102,10 @@ createConfigFromEnvVars = do
   dbDatabase <- lookupEnvDef "ASPICO_DB_DATABASE" "aspico"
   host <- lookupEnvDef "ASPICO_HOST" "localhost:8081"
   protocol <- lookupEnvDef "ASPICO_PROTOCOL" "http"
+  mpushUrl <- lookupEnv "ASPICO_PUSH_URL"
+  pushUrl <- case mpushUrl of
+    Nothing -> pure Nothing
+    Just str -> pure <$> parseBaseUrl str
   createConfig
     env
     port
@@ -109,3 +118,4 @@ createConfigFromEnvVars = do
     dbDatabase
     host
     protocol
+    pushUrl
