@@ -10,6 +10,7 @@ import Servant ((:>), Capture, Header, Headers, JSON, NoContent(..), ServerT, St
 import Web.Envelope (Err(..))
 import Web.HttpApiData (FromHttpApiData, ToHttpApiData)
 
+import ASPico.Config (Config)
 import ASPico.Db (Affiliate(..), URL)
 import ASPico.Error (AppErr, AppErrEnum(CouldNotFindAffiliate))
 import ASPico.Handler.Consts (affiliateCookie)
@@ -25,12 +26,12 @@ type ApiTrack = "track"
       NoContent)
 
 serverTrack
-  :: (MonadError AppErr m, MonadASPicoDb m)
+  :: (MonadError AppErr m, MonadASPicoDb m, MonadReader Config m, MonadIO m)
   => ServerT ApiTrack m
 serverTrack = record
 
 record
-  :: (MonadError AppErr m, MonadASPicoDb m)
+  :: (MonadError AppErr m, MonadASPicoDb m, MonadReader Config m, MonadIO m)
   => Key Affiliate
   -> m (Headers '[Header "Location" Location, Header "Set-Cookie" Cookie] NoContent)
 record k = do

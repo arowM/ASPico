@@ -17,21 +17,25 @@ import ASPico.Prelude
 import Servant (Accept(..), Header, Headers, MimeRender(..), addHeader)
 import Network.HTTP.Media (MediaType, (//))
 
+import ASPico.Config (Config)
+import ASPico.Environment (Environment(..), getEnv)
 import ASPico.Http (Cookie, IsCookieSecure(..), createCookie)
 
 -- | In @'addSessionHeader' cookieName cookieValue responseVal@, add the cookie
 -- named @cookieName@ and value @cookieValue@ to the response @Set-Cookie@
 -- HTTP header around the value @responseVal@.
 setCookieHeader
-  :: (Monad m)
+  :: (Monad m, MonadReader Config m, MonadIO m)
   => ByteString
   -> ByteString
   -> a
   -> m (Headers '[Header "Set-Cookie" Cookie] a)
 setCookieHeader cookieName cookieVal responseVal = do
+  env <- asks getEnv
   let
-    -- TODO
-    isCookieSecure = CookieInsecure
+    isCookieSecure = case env of
+      Production -> CookieSecure
+      _ -> CookieInsecure
     cookie = createCookie cookieName cookieVal isCookieSecure
   return $ addHeader cookie responseVal
 
