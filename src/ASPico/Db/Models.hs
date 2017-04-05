@@ -14,6 +14,7 @@ module ASPico.Db.Models
 
 import ASPico.Prelude
 
+import Data.Aeson.TH (deriveJSON, Options(..), defaultOptions)
 import Database.Persist
        (Entity(..), EntityField(..), Key(..), Unique)
 import Database.Persist.TH
@@ -35,3 +36,5 @@ instance GetEntityField Affiliate where
 
 instance GetEntityField Conversion where
   createdEntityField = ConversionCreated
+
+deriveJSON defaultOptions { fieldLabelModifier = drop 10 } ''Conversion

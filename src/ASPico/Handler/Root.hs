@@ -7,12 +7,13 @@ import Servant (ServerT, (:<|>)((:<|>)))
 import ASPico.Error (AppErr)
 import ASPico.Handler.Root.Affiliate (ApiAffiliate, serverAffiliate)
 import ASPico.Handler.Root.Conversion (ApiConversion, serverConversion)
+import ASPico.Handler.Root.RegisterPush (ApiRegisterPush, serverRegisterPush)
 import ASPico.Handler.Root.Track (ApiTrack, serverTrack)
 import ASPico.Monad (MonadASPico)
 
-type ApiRoot = ApiAffiliate :<|> ApiConversion :<|> ApiTrack
+type ApiRoot = ApiAffiliate :<|> ApiConversion :<|> ApiTrack :<|> ApiRegisterPush
 
 serverRoot
   :: (MonadError AppErr m, MonadASPico m)
   => ServerT ApiRoot m
-serverRoot = serverAffiliate :<|> serverConversion :<|> serverTrack
+serverRoot = serverAffiliate :<|> serverConversion :<|> serverTrack :<|> serverRegisterPush

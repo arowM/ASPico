@@ -14,6 +14,10 @@ import Web.FormUrlEncoded (FromForm, ToForm)
 
 import ASPico.Db (AdvertizerId, PartnerId, ProductId, URL)
 
+-- ----------------
+--  AffiliateForm
+-- ----------------
+
 data AffiliateForm = AffiliateForm
   { partner :: PartnerId
   , advertizer :: AdvertizerId
@@ -36,3 +40,27 @@ deriveJSON defaultOptions ''AffiliateResp
 instance FromForm AffiliateResp
 
 instance ToForm AffiliateResp
+
+-- ----------------
+--  RegisterPushForm
+-- ----------------
+
+data RegisterPushForm = RegisterPushForm
+  { url :: URL
+  } deriving (Data, Eq, Generic, Show, Typeable)
+
+deriveJSON defaultOptions ''RegisterPushForm
+
+instance FromForm RegisterPushForm
+
+instance ToForm RegisterPushForm
+
+data RegisterPushResp = RegisterPushResp
+  { pushId :: Text
+  } deriving (Data, Eq, Generic, Show, Typeable)
+
+deriveJSON defaultOptions ''RegisterPushResp
+
+instance FromForm RegisterPushResp
+
+instance ToForm RegisterPushResp

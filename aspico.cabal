@@ -18,6 +18,7 @@ library
   hs-source-dirs:      src
   exposed-modules:     ASPico
                      , ASPico.Api
+                     , ASPico.Client
                      , ASPico.Config
                      , ASPico.Db
                      , ASPico.Db.Models
@@ -88,6 +89,7 @@ library
                      , semigroups
                      , servant
                      , servant-blaze
+                     , servant-client
                      , servant-server
                      , template-haskell
                      , text
