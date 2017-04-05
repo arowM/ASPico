@@ -26,6 +26,15 @@ $ curl -v -X GET -H "Content-Type: application/json" "http://localhost:8081/v0/t
 $ curl -v -X GET --cookie "aspico-aff=${affiliate_id}" "http://localhost:8081/v0/cv?cid=${conversion_id}"
 ```
 
+## Environment variables
+
+See `src/ASPico/Config.hs`.
+Note that `ASPICO_PUSH_URL` is called on conversion with parameters like:
+
+```
+{"Affiliate":3,"Conversion":"test-cv3","Created":"2017-04-05T07:02:41.896459Z"}
+```
+
 ## Steps to setup postgres
 
 Use the following steps to setup postgres and set it up to be used with ASPico.
