@@ -18,7 +18,7 @@ aspicoEntityDefs =
     redirectTo  URL
     created     CreatedTime
 
-    UniqueAffiliate partner advertizer product
+    UniqueAffiliate partner advertizer product redirectTo
     deriving Eq
     deriving Show
     deriving Typeable

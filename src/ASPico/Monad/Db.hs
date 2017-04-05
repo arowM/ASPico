@@ -87,7 +87,7 @@ dbCreateAffiliate
   :: MonadASPicoDb m
   => AffiliateForm -> m (Entity Affiliate)
 dbCreateAffiliate AffiliateForm {..} = do
-  mEntity <- dbGetEntityBy $ UniqueAffiliate partner advertizer product
+  mEntity <- dbGetEntityBy $ UniqueAffiliate partner advertizer product redirectTo
   case mEntity of
     Just a -> pure a
     Nothing ->
