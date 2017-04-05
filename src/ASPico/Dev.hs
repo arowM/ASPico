@@ -16,6 +16,7 @@ module ASPico.Dev
 import ASPico.Prelude hiding (many, readFile, try)
 
 import Control.FromSum (fromEitherM)
+import Servant.Client (parseBaseUrl)
 import System.IO.Unsafe (unsafePerformIO)
 import Text.HTML.DOM (readFile)
 import Text.Pretty.Simple (pPrint)
@@ -43,10 +44,11 @@ configDev =
     "localhost"
     5432
     "aspico"
-    "ua0yay1nznznzbwer07a"
+    "3pUiRmS2Rv6f28uW"
     "aspico"
     "localhost:8082"
     "http"
+    (parseBaseUrl "http://localhost:8082/push")
 
 runASPicoMDev :: ASPicoM a -> IO (Either AppErr a)
 runASPicoMDev = runASPicoM configDev
