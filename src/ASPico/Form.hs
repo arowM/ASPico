@@ -12,7 +12,8 @@ import ASPico.Prelude
 import Data.Aeson.TH (defaultOptions, deriveJSON)
 import Web.FormUrlEncoded (FromForm, ToForm)
 
-import ASPico.Db (AdvertizerId, PartnerId, ProductId, URL)
+import ASPico.Db
+       (AdvertizerId, CreatedTime, CvId, PartnerId, ProductId, URL)
 
 -- ----------------
 --  AffiliateForm
@@ -64,3 +65,20 @@ deriveJSON defaultOptions ''RegisterPushResp
 instance FromForm RegisterPushResp
 
 instance ToForm RegisterPushResp
+
+-- ----------------
+--  RunPushForm
+-- ----------------
+data RunPushForm = RunPushForm
+  { partner :: PartnerId
+  , advertizer :: AdvertizerId
+  , product :: ProductId
+  , conversion :: Maybe CvId
+  , created :: CreatedTime
+  } deriving (Data, Eq, Generic, Show, Typeable)
+
+deriveJSON defaultOptions ''RunPushForm
+
+instance FromForm RunPushForm
+
+instance ToForm RunPushForm

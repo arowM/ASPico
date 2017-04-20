@@ -14,11 +14,13 @@ import Web.HttpApiData (FromHttpApiData(..), ToHttpApiData)
 
 import ASPico.Client (runPush)
 import ASPico.Config (Config(..))
-import ASPico.Db (Affiliate, CvId)
+import ASPico.Db (Affiliate(..), Conversion(..), CvId)
 import ASPico.Error (AppErr)
+import ASPico.Form (RunPushForm(..))
 import ASPico.Handler.Consts (affiliateCookie)
 import ASPico.Handler.Root.Conversion.TH (pngContent)
-import ASPico.Monad (MonadASPicoDb, dbCreateConversion)
+import ASPico.Monad
+       (MonadASPicoDb, dbCreateConversion, dbGetEntity)
 import ASPico.Servant (Png)
 
 type ApiConversion = "cv"
@@ -41,18 +43,25 @@ instance FromHttpApiData AffiliateCookie where
 serverConversion
   :: (MonadError AppErr m, MonadASPicoDb m, MonadReader Config m, MonadIO m)
   => ServerT ApiConversion m
-serverConversion = conversion
+serverConversion = conversionHandler
 
-conversion
+conversionHandler
   :: (MonadError AppErr m, MonadASPicoDb m, MonadReader Config m, MonadIO m)
   => Maybe CvId -> Maybe AffiliateCookie -> m ByteString
-conversion mconvId mcookie = do
+conversionHandler mconvId mcookie = do
   case mcookie of
     Just (AffiliateCookie affId) -> do
-      (Entity _ conv) <- dbCreateConversion affId mconvId
+      (Entity _ Conversion{..}) <- dbCreateConversion affId mconvId
+      mAffiliate <- dbGetEntity conversionAffiliate
       mUrl <- asks configPushUrl
-      case mUrl of
-        Just url -> liftIO $ runPush url conv
+      case (entityVal <$> mAffiliate, mUrl) of
+        (Just Affiliate{..}, Just url) -> liftIO . runPush url $ RunPushForm
+          { partner = affiliatePartner
+          , advertizer = affiliateAdvertizer
+          , product = affiliateProduct
+          , conversion = conversionConversion
+          , created = conversionCreated
+          }
         _ -> pure ()
     _ -> pure ()
   pure $(pngContent)

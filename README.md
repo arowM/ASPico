@@ -32,7 +32,7 @@ See `src/ASPico/Config.hs`.
 Note that `ASPICO_PUSH_URL` is called on conversion with parameters like:
 
 ```
-{"Affiliate":3,"Conversion":"test-cv3","Created":"2017-04-05T07:02:41.896459Z"}
+{"partner":"partner_id","advertizer":"advertizer_id","product":"10004","conversion":"test-cv3","created":"2017-04-20T07:07:07.429143Z"}
 ```
 
 ## Steps to setup postgres

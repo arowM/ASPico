@@ -15,12 +15,14 @@ newtype CreatedTime = CreatedTime
   { unCreatedTime :: UTCTime
   } deriving ( Data
              , Eq
+             , FromHttpApiData
              , FromJSON
              , Generic
              , Ord
              , PersistField
              , PersistFieldSql
              , Show
+             , ToHttpApiData
              , ToJSON
              , Typeable
              )

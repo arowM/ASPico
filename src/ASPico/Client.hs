@@ -11,18 +11,18 @@ import Network.HTTP.Client (newManager, defaultManagerSettings)
 import Servant.API
 import Servant.Client
 
-import ASPico.Db (Conversion)
+import ASPico.Form (RunPushForm)
 
 type API
-  = ReqBody '[JSON] Conversion :> Post '[JSON] ()
+  = ReqBody '[JSON] RunPushForm :> Post '[JSON] ()
 
 api :: Proxy API
 api = Proxy
 
-push :: Conversion -> ClientM ()
+push :: RunPushForm -> ClientM ()
 push = client api
 
-runPush :: BaseUrl -> Conversion -> IO ()
+runPush :: BaseUrl -> RunPushForm -> IO ()
 runPush url conv = do
   manager <- newManager defaultManagerSettings
   void $ runClientM (push conv) (ClientEnv manager url)
