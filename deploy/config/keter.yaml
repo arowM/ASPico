@@ -4,5 +4,6 @@ stanzas:
     host: localhost
     env:
       ENV: Production
+      ASPICO_PUSH_URL: "http://localhost:1267/v0/register-cv"
     forward-env:
       - ASPICO_DB_PASSWORD
