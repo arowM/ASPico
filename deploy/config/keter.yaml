@@ -1,7 +1,7 @@
 stanzas:
   - type: webapp
     exec: ../aspico-api
-    host: localhost
+    host: "localhost:8055"
     env:
       ENV: Production
       ASPICO_PUSH_URL: "http://localhost:1267/v0/register-cv"
