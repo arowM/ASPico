@@ -33,6 +33,7 @@ library
                      , ASPico.Form
                      , ASPico.Handler
                      , ASPico.Handler.Consts
+                     , ASPico.Handler.Cookie
                      , ASPico.Handler.Root
                      , ASPico.Handler.Root.Affiliate
                      , ASPico.Handler.Root.Conversion

@@ -20,6 +20,8 @@ $ curl -v -X POST -H "Content-Type: application/json" -d '
 $ curl -v -X GET -H "Content-Type: application/json" "http://localhost:8081/v0/track/${affiliate_id}"
 ```
 
+If a cookie value named "aspico-aff" has already exists, its value is used.
+
 ### Save conversion
 
 ```bash

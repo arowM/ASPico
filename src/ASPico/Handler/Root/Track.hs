@@ -14,12 +14,13 @@ import ASPico.Config (Config)
 import ASPico.Db (Affiliate(..), URL)
 import ASPico.Error (AppErr, AppErrEnum(CouldNotFindAffiliate))
 import ASPico.Handler.Consts (affiliateCookie)
+import ASPico.Handler.Cookie (AffiliateCookie(..))
 import ASPico.Monad (MonadASPicoDb, dbGetEntity)
 import ASPico.Servant (Cookie, setCookieHeader)
 
 type ApiTrack = "track"
   :> Capture "aff-id" (Key Affiliate)
-
+  :> Header "Cookie" AffiliateCookie
   :> Verb 'GET 302 '[JSON]
     (Headers
       '[Header "Location" Location, Header "Set-Cookie" Cookie]
@@ -33,16 +34,29 @@ serverTrack = record
 record
   :: (MonadError AppErr m, MonadASPicoDb m, MonadReader Config m, MonadIO m)
   => Key Affiliate
+  -> Maybe AffiliateCookie
   -> m (Headers '[Header "Location" Location, Header "Set-Cookie" Cookie] NoContent)
-record k = do
+record k mcookie = do
   mEntity <- dbGetEntity k
-  case mEntity of
-    Nothing -> throwError
-      (Err CouldNotFindAffiliate
-        (Just $ "Affiliate ID " <> (tshow . fromSqlKey) k <> " doesn't exist")
-      )
-    Just (Entity _ Affiliate{affiliateRedirectTo}) -> do
-      header <- setCookieHeader affiliateCookie (encodeUtf8 . tshow . fromSqlKey $ k) NoContent
+  case (mEntity, mcookie) of
+    (Nothing, _) ->
+      throwError
+        (Err
+           CouldNotFindAffiliate
+           (Just $ "Affiliate ID " <> (tshow . fromSqlKey) k <> " doesn't exist"))
+    (Just (Entity _ Affiliate {affiliateRedirectTo}), Just (AffiliateCookie affId)) -> do
+      header <-
+        setCookieHeader
+          affiliateCookie
+          (encodeUtf8 . tshow . fromSqlKey $ affId)
+          NoContent
+      pure $ addHeader (Location affiliateRedirectTo) header
+    (Just (Entity _ Affiliate {affiliateRedirectTo}), Nothing) -> do
+      header <-
+        setCookieHeader
+          affiliateCookie
+          (encodeUtf8 . tshow . fromSqlKey $ k)
+          NoContent
       pure $ addHeader (Location affiliateRedirectTo) header
 
 newtype Location =
