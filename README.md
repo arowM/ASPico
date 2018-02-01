@@ -11,7 +11,7 @@ This is an experimental project to create a tiny ASP (Affiliate Service Provider
 ```bash
 $ curl -v -X POST -H "Content-Type: application/json" -d '
   {"partner": "partner_id", "advertizer": "advertizer_id", "product": "product_id", "redirectTo": "redirect_url"}
-' 'http://localhost:8081/v0/affiliate_url'
+' 'http://localhost:8081/v0/affiliate'
 ```
 
 ### Start tracking
