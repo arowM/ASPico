@@ -22,6 +22,12 @@ $ curl -v -X GET -H "Content-Type: application/json" "http://localhost:8081/v0/t
 
 If a cookie value named "aspico-aff" has already exists, its value is used.
 
+To overwrite existing "aspico-aff" cookie, there is a yet another way to start tracking as follows.
+
+```bash
+$ curl -v -X GET -H "Content-Type: application/json" "http://localhost:8081/v0/track/${affiliate_id}/force"
+```
+
 ### Save conversion
 
 ```bash
